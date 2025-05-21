@@ -2,7 +2,12 @@
 
 A scalable microservices-based system for monitoring Twitter profile activities and inactivity alerts using a producer-consumer architecture. Features a modern UI built with React.js, Vite, Shadcn, and Tailwind CSS for a responsive and beautiful user experience.
 
-## 🖼️ React.js + Vite UI
+## 🖼️ Modern UI Stack
+
+Built with a powerful combination of modern frontend technologies:
+- **React.js + Vite**: For lightning-fast development and optimal performance
+- **Shadcn/ui**: Beautiful, accessible, and customizable components
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
 
 ![React.js with Vite UI](ui.png)
 
