@@ -16,6 +16,7 @@ Built with a powerful combination of modern frontend technologies:
 - **Default Credentials**:
   - Username: `guest`
   - Password: `guest`
+  
 RabbitMQ is the core of this system that engineered for massive horizontal scaling, specifically designed to handle billions of Twitter profiles across distributed Docker containers and multiple servers. At its core, RabbitMQ serves as the message broker, enabling asynchronous processing of profile inactivity checks in a highly scalable manner. The consumer service is the backbone of this scalability, configured in `docker-compose.yml` to support:
 
 ```yaml
