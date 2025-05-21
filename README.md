@@ -26,6 +26,10 @@ consumer:
     restart_policy:
       condition: on-failure
 ```
+- **URL**: `http://localhost:15672`
+- **Default Credentials**:
+  - Username: `guest`
+  - Password: `guest`
 ![React.js with Vite UI](rabbitmq.png)
 ### 🚀 Massive Scale Processing
 - **Distributed Processing**: Each consumer instance can process thousands of profiles simultaneously
