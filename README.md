@@ -153,20 +153,6 @@ Each service has its own test suite. Here's how to run tests for each component:
 # API Service Tests
 cd backend/api
 npm test
-npm run test:coverage  # For coverage report
-
-# Producer Service Tests
-cd backend/producer
-npm test
-
-# Consumer Service Tests
-cd backend/consumer
-npm test
-
-# Frontend Tests
-cd frontend
-npm test
-npm run test:coverage  # For coverage report
 ```
 
 ### Test Types
