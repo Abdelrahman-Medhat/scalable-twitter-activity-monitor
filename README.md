@@ -48,7 +48,7 @@ A scalable microservices-based system for monitoring Twitter profile activities 
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd twitter-activity-monitor
+   cd scalable-twitter-activity-monitor
    ```
 
 2. Start the services:
@@ -59,9 +59,7 @@ A scalable microservices-based system for monitoring Twitter profile activities 
 ## 🔌 Service Access
 
 ### API Service
-- **URL**: `http://localhost:3000`
-- **Health Check**: `http://localhost:3000/health`
-- **API Documentation**: `http://localhost:3000/api-docs`
+- **URL**: `http://localhost:80`
 
 ### RabbitMQ Management
 - **URL**: `http://localhost:15672`
@@ -80,7 +78,7 @@ A scalable microservices-based system for monitoring Twitter profile activities 
 
 | Service    | Port  | Description                    |
 |------------|-------|--------------------------------|
-| API        | 3000  | REST API endpoints            |
+| API        | 80  | REST API endpoints               |
 | RabbitMQ   | 5672  | AMQP protocol                 |
 | RabbitMQ   | 15672 | Management interface          |
 | PostgreSQL | 5432  | Database access               |
