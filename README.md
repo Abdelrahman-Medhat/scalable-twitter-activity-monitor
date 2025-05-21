@@ -2,9 +2,9 @@
 
 A scalable microservices-based system for monitoring Twitter profile activities and inactivity alerts using a producer-consumer architecture.
 
-## 🏗️ System Architecture
+## 🖼️ React.js + Vite UI
 
-![System Architecture](ui.png)
+![React.js + Vite UI](ui.png)
 
 ## ✨ Key Features
 
