@@ -142,3 +142,40 @@ docker-compose down
 ## 📄 License
 
 ISC 
+
+## 🧪 Testing
+
+### Running Tests
+
+Each service has its own test suite. Here's how to run tests for each component:
+
+```bash
+# API Service Tests
+cd backend/api
+npm test
+npm run test:coverage  # For coverage report
+
+# Producer Service Tests
+cd backend/producer
+npm test
+
+# Consumer Service Tests
+cd backend/consumer
+npm test
+
+# Frontend Tests
+cd frontend
+npm test
+npm run test:coverage  # For coverage report
+```
+
+### Test Types
+- **Unit Tests**: Testing individual components and functions
+- **Integration Tests**: Testing service interactions
+- **E2E Tests**: Testing complete user flows
+- **Load Tests**: Testing system performance under load
+
+### Test Coverage
+- API Service: Jest + Supertest
+- Producer/Consumer: Jest
+- Frontend: Vitest + React Testing Library 
