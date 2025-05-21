@@ -61,12 +61,17 @@ app.get('/alerts', async (req, res) => {
     }
 });
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Only start the server if this file is being run directly
+if (require.main === module) {
+    // Start server
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
 
-// Handle graceful shutdown
-process.on('SIGTERM', async () => {
-    process.exit(0);
-}); 
+    // Handle graceful shutdown
+    process.on('SIGTERM', async () => {
+        process.exit(0);
+    });
+}
+
+export default app;
