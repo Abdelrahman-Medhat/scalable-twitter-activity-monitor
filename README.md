@@ -1,10 +1,32 @@
 # 🐦 Twitter Activity Monitoring System
 
-A scalable microservices-based system for monitoring Twitter profile activities and inactivity alerts using a producer-consumer architecture.
+A scalable microservices-based system for monitoring Twitter profile activities and inactivity alerts using a producer-consumer architecture. Features a modern UI built with React.js, Vite, Shadcn, and Tailwind CSS for a responsive and beautiful user experience.
 
 ## 🖼️ React.js + Vite UI
 
-![React.js + Vite UI](ui.png)
+![React.js with Vite UI](ui.png)
+
+## 🔄 Scaling Configuration
+
+The system is designed for horizontal scaling, particularly the consumer service. In the `docker-compose.yml`, the consumer service is configured with:
+
+```yaml
+consumer:
+  deploy:
+    replicas: 3  # Number of consumer instances
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 512M
+    restart_policy:
+      condition: on-failure
+```
+
+This configuration allows the consumer service to:
+- Run multiple instances for load balancing
+- Automatically restart on failures
+- Distribute message processing across instances
+- Handle increased message volume
 
 ## ✨ Key Features
 
