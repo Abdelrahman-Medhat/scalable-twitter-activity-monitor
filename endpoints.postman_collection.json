@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "14fd9054-959a-455b-93e3-36b4ad989296",
+		"name": "scalable-twitter-activity-monitor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23990195"
+	},
+	"item": [
+		{
+			"name": "Returns a list of unique Twitter handles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/profiles",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"profiles"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/profiles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profiles"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "232"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e8-B1XzqvbwXGpXQ1/SVZqgRkDBqjA\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:41:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": \"55460ffb-668d-468e-87ef-c4ad1bdfb5e6\",\n            \"handle\": \"elonmusk\",\n            \"activityCount\": 1,\n            \"isActive\": true,\n            \"lastActivityAt\": \"2025-05-21T07:25:37.241Z\",\n            \"createdAt\": \"2025-05-21T07:25:37.262Z\",\n            \"updatedAt\": \"2025-05-21T07:25:37.262Z\"\n        }\n    ]\n}"
+				},
+				{
+					"name": "500 server error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"alerts"
+							]
+						}
+					},
+					"status": "SERVER ERROR",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "224"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e0-xbPfB8gfpo1uC2IZddMl6iqKNoE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:47:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"An unknown error occurred\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Track activity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"handle\":\"elonmusk\",\n    \"type\":\"REPLY\" // TWEET, RETWEET, REPLY\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/activity",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"activity"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "422 Validation Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"handle\":\"elonmusk\",\n    \"type\":\"ddgdgd\",\n    \"timestamp\":\"2025-05-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/activity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"status": "Unprocessable Entity",
+					"code": 422,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "335"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"14f-7Bjt4Fz8J8jZaqg9XXZ4gBLT7uM\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:24:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Validation Error\",\n    \"errors\": [\n        {\n            \"received\": \"ddgdgd\",\n            \"code\": \"invalid_enum_value\",\n            \"options\": [\n                \"TWEET\",\n                \"RETWEET\",\n                \"REPLY\"\n            ],\n            \"path\": [\n                \"type\"\n            ],\n            \"message\": \"Invalid enum value. Expected 'TWEET' | 'RETWEET' | 'REPLY', received 'ddgdgd'\"\n        },\n        {\n            \"code\": \"invalid_string\",\n            \"validation\": \"datetime\",\n            \"message\": \"Invalid datetime\",\n            \"path\": [\n                \"timestamp\"\n            ]\n        }\n    ]\n}"
+				},
+				{
+					"name": "500 server error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"alerts"
+							]
+						}
+					},
+					"status": "SERVER ERROR",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "224"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e0-xbPfB8gfpo1uC2IZddMl6iqKNoE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:47:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"An unknown error occurred\"\n}"
+				},
+				{
+					"name": "201 sucess",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"handle\":\"elonmusk\",\n    \"type\":\"TWEET\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/activity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "221"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"dd-fy5D0zw6tJRbSC988Bu3IR0B4+Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:25:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"55460ffb-668d-468e-87ef-c4ad1bdfb5e6\",\n    \"handle\": \"elonmusk\",\n    \"activityCount\": 1,\n    \"isActive\": true,\n    \"lastActivityAt\": \"2025-05-21T07:25:37.241Z\",\n    \"createdAt\": \"2025-05-21T07:25:37.262Z\",\n    \"updatedAt\": \"2025-05-21T07:25:37.262Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Inactive profiles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/alerts",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"alerts"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"alerts"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "224"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e0-xbPfB8gfpo1uC2IZddMl6iqKNoE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:47:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": \"55460ffb-668d-468e-87ef-c4ad1bdfb5e6\",\n        \"handle\": \"elonmusk\",\n        \"activityCount\": 1,\n        \"isActive\": false,\n        \"lastActivityAt\": \"2025-05-21T06:25:37.241Z\",\n        \"createdAt\": \"2025-05-21T07:25:37.262Z\",\n        \"updatedAt\": \"2025-05-21T07:47:09.270Z\"\n    }\n]"
+				},
+				{
+					"name": "500 server error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"alerts"
+							]
+						}
+					},
+					"status": "SERVER ERROR",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "224"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"e0-xbPfB8gfpo1uC2IZddMl6iqKNoE\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 21 May 2025 07:47:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"An unknown error occurred\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

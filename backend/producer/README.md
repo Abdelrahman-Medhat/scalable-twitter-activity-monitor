@@ -1,10 +1,10 @@
-# Twitter Activity Consumer Service
+# Twitter Activity Producer Service
 
-A dedicated microservice for processing Twitter profile activity data and managing inactivity checks in real-time.
+A dedicated microservice responsible for generating and publishing Twitter profile activity events to the message queue for processing.
 
 ## Overview
 
-This service acts as a background processor that consumes activity data from a message queue, processes profile inactivity checks, and updates profile statuses accordingly. It's designed to work in conjunction with the main API service to provide real-time activity monitoring.
+This service acts as the event producer in the system, responsible for monitoring Twitter profiles and publishing activity events to a message queue. It works in conjunction with the consumer service to enable real-time activity tracking and processing.
 
 ## Architecture
 
@@ -16,10 +16,10 @@ This service acts as a background processor that consumes activity data from a m
 
 ## Key Features
 
-- Asynchronous activity processing
-- Real-time inactivity monitoring
+- Real-time activity event generation
+- Asynchronous event publishing
 - Scalable queue-based architecture
-- Automated status updates
+- Automated event scheduling
 - Containerized deployment
 - Type-safe implementation
 
@@ -71,11 +71,20 @@ The service is containerized for easy deployment:
 
 ## Service Integration
 
-This service works in conjunction with the main API service:
-- Consumes activity data from the queue
-- Processes inactivity checks
-- Updates profile statuses
-- Maintains data consistency
+This service works in conjunction with the consumer service:
+- Generates activity events
+- Publishes events to the queue
+- Maintains event scheduling
+- Ensures data consistency
+
+## Event Types
+
+The service handles various types of Twitter activities:
+- Tweets
+- Retweets
+- Replies
+- Profile updates
+- Activity status changes
 
 ## Contributing
 
