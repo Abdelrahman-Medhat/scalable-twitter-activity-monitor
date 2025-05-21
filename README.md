@@ -13,7 +13,7 @@ Built with a powerful combination of modern frontend technologies:
 
 ## 🔄 Scaling Configuration
 
-The system is engineered for massive horizontal scaling, specifically designed to handle billions of Twitter profiles across distributed Docker containers and multiple servers. The consumer service is the backbone of this scalability, configured in `docker-compose.yml` to support:
+RabbitMQ is the core of this system that engineered for massive horizontal scaling, specifically designed to handle billions of Twitter profiles across distributed Docker containers and multiple servers. At its core, RabbitMQ serves as the message broker, enabling asynchronous processing of profile inactivity checks in a highly scalable manner. The consumer service is the backbone of this scalability, configured in `docker-compose.yml` to support:
 
 ```yaml
 consumer:
@@ -32,18 +32,6 @@ consumer:
 - **Load Distribution**: Work is automatically distributed across all consumer instances
 - **Cross-Server Deployment**: Consumers can be deployed across multiple physical servers
 - **Dynamic Scaling**: Automatically scales based on queue size and processing load
-
-### 💪 High Availability Features
-- **Automatic Failover**: If a consumer fails, its work is redistributed
-- **Zero Downtime**: Rolling updates and deployments
-- **Fault Tolerance**: Built-in retry mechanisms and error handling
-- **Data Consistency**: Ensures no profile is missed during scaling operations
-
-### 📊 Performance Optimization
-- **Resource Management**: Each consumer is optimized for CPU and memory usage
-- **Queue Management**: Smart queue partitioning for efficient processing
-- **Batch Processing**: Optimized for handling large batches of profiles
-- **Memory Efficiency**: Efficient data structures for profile tracking
 
 This architecture allows the system to:
 - Process billions of Twitter profiles efficiently
@@ -110,32 +98,8 @@ This architecture allows the system to:
 | RabbitMQ   | 15672 | Management interface          |
 | PostgreSQL | 5432  | Database access               |
 
-## 🔄 Scaling Configuration
-
-The system is designed for horizontal scaling, particularly the consumer service. In the `docker-compose.yml`, the consumer service is configured with:
-
-```yaml
-consumer:
-  deploy:
-    replicas: 3  # Number of consumer instances
-    resources:
-      limits:
-        cpus: '0.5'
-        memory: 512M
-    restart_policy:
-      condition: on-failure
-```
-
-This configuration allows the consumer service to:
-- Run multiple instances for load balancing
-- Automatically restart on failures
-- Distribute message processing across instances
-- Handle increased message volume
-
 ## 🔍 Monitoring
-
-- **API Metrics**: `http://localhost:3000/metrics`
-- **RabbitMQ Metrics**: `http://localhost:15672/api/metrics`
+- **RabbitMQ Metrics**: `http://localhost:15672`
 - **Queue Status**: `http://localhost:15672/#/queues`
 
 ## 🛠️ Development
@@ -143,22 +107,13 @@ This configuration allows the consumer service to:
 ### Local Development
 ```bash
 # Start services in development mode
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
 # Stop services
 docker-compose down
-```
-
-### Production Deployment
-```bash
-# Start services in production mode
-docker-compose -f docker-compose.prod.yml up -d
-
-# Scale consumer service
-docker-compose -f docker-compose.prod.yml up -d --scale consumer=5
 ```
 
 ## 📚 Documentation
