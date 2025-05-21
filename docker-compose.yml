@@ -1,3 +1,5 @@
+name: scalable-twitter-activity-monitor
+
 version: '3.8'
 
 services:
@@ -9,11 +11,27 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/twitter_activity_monitor
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
     depends_on:
       - postgres
-      - redis
+      - rabbitmq
+
+  producer:
+    build:
+      context: ./backend/producer
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/twitter_activity_monitor
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+    depends_on:
+      - postgres
+      - rabbitmq
 
   consumer:
     build:
@@ -21,20 +39,33 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/twitter_activity_monitor
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
     depends_on:
       - postgres
-      - redis
+      - rabbitmq
     deploy:
       replicas: 2  # For the sake of scalability
 
-  redis:
-    image: redis:alpine
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
     ports:
-      - "6379:6379"
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     volumes:
-      - redis_data:/data
+      - ./backend/rabbitmq/data:/var/lib/rabbitmq
+      - ./backend/rabbitmq/config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./backend/rabbitmq/logs:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   postgres:
     image: postgres:15-alpine
@@ -46,7 +77,43 @@ services:
       - POSTGRES_DB=twitter_activity_monitor
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  postgres-coordinator:
+    image: citusdata/citus:12.1
+    container_name: citus_coordinator
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+      - PGUSER=postgres
+      - CITUS_WORKERS=postgres-shard-1,postgres-shard-2
+    depends_on:
+      - postgres-shard-1
+      - postgres-shard-2
+    volumes:
+      - ./backend/sharded-postgres/coordinator:/var/lib/postgresql/data
+      - ./backend/sharded-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  postgres-shard-1:
+    image: citusdata/citus:12.1
+    container_name: postgres-shard-1
+    hostname: postgres-shard-1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - ./backend/sharded-postgres/shard-1:/var/lib/postgresql/data
+
+  postgres-shard-2:
+    image: citusdata/citus:12.1
+    container_name: postgres-shard-2
+    hostname: postgres-shard-2
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - ./backend/sharded-postgres/shard-2:/var/lib/postgresql/data
 
 volumes:
-  redis_data:
+  rabbitmq_data:
   postgres_data:

@@ -2,6 +2,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum ActivityType {
+  TWEET
+  RETWEET
+  REPLY
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -19,11 +25,11 @@ model Profile {
 }
 
 model Activity {
-  id        String   @id @default(uuid())
-  type      String   // TWEET, RETWEET, REPLY
-  timestamp DateTime @default(now())
-  profile   Profile  @relation(fields: [profileId], references: [id])
+  id        String       @id @default(uuid())
+  type      ActivityType
+  timestamp DateTime     @default(now())
+  profile   Profile      @relation(fields: [profileId], references: [id])
   profileId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 } 

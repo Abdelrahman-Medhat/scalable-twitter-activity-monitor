@@ -1,7 +1,7 @@
 {
-  "name": "twitter-activity-consumer",
+  "name": "twitter-activity-producer",
   "version": "1.0.0",
-  "description": "Consumer service for Twitter activity monitoring",
+  "description": "Producer service for Twitter activity monitoring",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.0",
-    "amqplib": "^0.10.8",
+    "amqplib": "^0.10.3",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.10.7",
+    "@types/amqplib": "^0.10.4",
     "@types/node": "^20.11.20",
     "prisma": "^5.10.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   }
-}
+} 
