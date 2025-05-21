@@ -23,8 +23,3 @@
 # RabbitMQ data and logs
 backend/rabbitmq/data/*
 backend/rabbitmq/logs/*
-
-# Sharded Postgres data
-backend/sharded-postgres/coordinator/*
-backend/sharded-postgres/shard-1/*
-backend/sharded-postgres/shard-2/* 

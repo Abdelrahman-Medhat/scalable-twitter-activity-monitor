@@ -37,11 +37,12 @@ class ConsumerService {
             // Start consuming
             await channel.consume(QUEUE_NAME, async (msg: amqp.ConsumeMessage | null) => {
                 if (!msg) return;
-
+                console.log('Received message:', msg.content.toString());
+                
                 try {
                     const profile = JSON.parse(msg.content.toString()) as Profile;
                     const now = new Date();
-                    const lastActivity = profile.lastActivityAt;
+                    const lastActivity = profile.lastActivityAt ? new Date(profile.lastActivityAt) : null;
 
                     if (!lastActivity) {
                         channel.ack(msg);

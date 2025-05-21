@@ -1,6 +1,6 @@
 import { Profile, Activity } from '@prisma/client';
-import { ActivityType } from '@/types';
-import { db } from '@/db';
+import { ActivityType } from '../types';
+import { db } from '../db';
 
 export class TwitterService {
     async storeActivity(handle: string, type: ActivityType, timestamp?: Date): Promise<Profile> {

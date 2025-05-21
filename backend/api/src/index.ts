@@ -1,25 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import { TwitterService } from '@/services/TwitterService';
-import { activityPayloadSchema } from '@/schemas/activity';
-import { ActivityPayload } from '@/types';
-import { ProducerService } from '@/services/ProducerService';
+import { TwitterService } from './services/TwitterService';
+import { activityPayloadSchema } from './schemas/activity';
+import { ActivityPayload } from './types';
 import { ZodError } from 'zod';
 
 const app = express();
 const port = process.env.PORT || 3000;
 const twitterService = new TwitterService();
-const producerService = new ProducerService();
-
-
-/**
-    Start Scheduler where it's act as a producer only to produce queue messages for all the 
-    profiles every minute this is the best practice for a scalable system because we are not
-    running any background jobs, we are just producing queue messages and a worker will be
-    consuming those messages in the background to check the inactivity of the profiles it can
-    be one worker or multiple workers, it depends on the count of docker containers running.
- */
-producerService.startScheduler().catch(console.error);
 
 // Middleware
 app.use(cors());
@@ -46,7 +34,7 @@ app.post('/activity', async (req, res) => {
             });
         } else {
             const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-            res.status(400).json({ error: errorMessage });
+            res.status(500).json({ error: errorMessage });
         }
     }
 });
@@ -54,7 +42,9 @@ app.post('/activity', async (req, res) => {
 app.get('/profiles', async (req, res) => {
     try {
         const profiles = await twitterService.getProfiles();
-        res.json(profiles);
+        res.json({
+            data: profiles
+        });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         res.status(500).json({ error: errorMessage });

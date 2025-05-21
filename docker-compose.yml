@@ -8,7 +8,7 @@ services:
       context: ./backend/api
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/twitter_activity_monitor
       - RABBITMQ_HOST=rabbitmq
@@ -16,8 +16,10 @@ services:
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   producer:
     build:
@@ -30,8 +32,10 @@ services:
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   consumer:
     build:
@@ -44,28 +48,30 @@ services:
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     deploy:
       replicas: 2  # For the sake of scalability
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
-      - "5672:5672"   # AMQP protocol port
-      - "15672:15672" # Management UI
+      - 5672:5672   # AMQP protocol port
+      - 15672:15672 # Management UI
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - ./backend/rabbitmq/data:/var/lib/rabbitmq
-      - ./backend/rabbitmq/config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./backend/rabbitmq/logs:/var/log/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 30s
       timeout: 10s
       retries: 5
+    command: rabbitmq-server
 
   postgres:
     image: postgres:15-alpine
@@ -77,42 +83,11 @@ services:
       - POSTGRES_DB=twitter_activity_monitor
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  postgres-coordinator:
-    image: citusdata/citus:12.1
-    container_name: citus_coordinator
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
-      - PGUSER=postgres
-      - CITUS_WORKERS=postgres-shard-1,postgres-shard-2
-    depends_on:
-      - postgres-shard-1
-      - postgres-shard-2
-    volumes:
-      - ./backend/sharded-postgres/coordinator:/var/lib/postgresql/data
-      - ./backend/sharded-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-
-  postgres-shard-1:
-    image: citusdata/citus:12.1
-    container_name: postgres-shard-1
-    hostname: postgres-shard-1
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
-    volumes:
-      - ./backend/sharded-postgres/shard-1:/var/lib/postgresql/data
-
-  postgres-shard-2:
-    image: citusdata/citus:12.1
-    container_name: postgres-shard-2
-    hostname: postgres-shard-2
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
-    volumes:
-      - ./backend/sharded-postgres/shard-2:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   rabbitmq_data:
