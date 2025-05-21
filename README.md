@@ -26,7 +26,7 @@ consumer:
     restart_policy:
       condition: on-failure
 ```
-
+![React.js with Vite UI](rabbitmq.png)
 ### 🚀 Massive Scale Processing
 - **Distributed Processing**: Each consumer instance can process thousands of profiles simultaneously
 - **Load Distribution**: Work is automatically distributed across all consumer instances
